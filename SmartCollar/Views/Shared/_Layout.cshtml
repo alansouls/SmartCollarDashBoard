@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SmartCollar</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/telerik/css/kendo.common.min.css" />
+    <link rel="stylesheet" href="~/lib/telerik/css/kendo.default.min.css" />
+    <link href="https://kendo.cdn.telerik.com/2021.1.119/styles/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.pt-BR.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="row flex-row justify-content-center">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img height="100" width="200" src="~/images/smartcollarwideicon.png" />
+            </a>
+        </div>
+    </header>
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - SmartCollar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/telerik/js/kendo.all.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

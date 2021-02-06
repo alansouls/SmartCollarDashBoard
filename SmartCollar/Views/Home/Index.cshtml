@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<section class="py-4">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Mapa de Ataques
+                </div>
+                <div class="card-body">
+                    <div id="attack-map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Frequência de Notificações na Semana
+                </div>
+                <div class="card-body">
+                    <div id="frequency-chart" style="height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="card">
+        <div class="card-header">
+            Histórico de Notificações
+        </div>
+        <div class="card-body">
+            <div id="grid"></div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: "@Url.Action("GetNotifications", "Home")"
+                    },
+                    pageSize: 20
+                },
+                height: 550,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+
+                columns: [{
+                    field: "latitude",
+                    title: "Latitude"
+                }, {
+                    field: "longitude",
+                    title: "Longitude"
+                }, {
+                    field: "precision",
+                    title: "Precisão"
+                }, {
+                        field: "timeString",
+                        title: "Data e Hora",
+                        type: "string"
+                    }, {
+                        field: "lastTimeSeenString",
+                        title: "Ultima atualização",
+                        type: "string"
+                    }, {
+                        field: "userObservation",
+                        title: "Observação do usuário",
+                        width: 240
+                    }]
+            });
+        });
+    </script>
+
+    <script>
+        function createMap() {
+            var activeShape;
+
+            $("#attack-map").kendoMap({
+                center: [-3.744221, -38.574716],
+                minZoom: 15,
+                zoom: 19,
+                wraparound: true,
+                layers: [{
+                    type: "tile",
+                    urlTemplate: "https://#= subdomain #.tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png",
+                    subdomains: ["a", "b", "c"],
+                    attribution: "&copy; <a href='https://osm.org/copyright'>OpenStreetMap contributors</a>"
+                }, {
+                    type: "bubble",
+                    style: {
+                        fill: {
+                            color: "#f00",
+                            opacity: 0.4
+                        },
+                        stroke: {
+                            width: 0
+                        }
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Action("GetNotificationsMapLocations", "Home")",
+                                dataType: "json"
+                            }
+                        }
+                    },
+                    locationField: "location",
+                    valueField: "value"
+                }],
+                shapeMouseEnter: onShapeMouseEnter,
+                reset: onReset
+            });
+
+            function onShapeMouseEnter(e) {
+                if (activeShape) {
+                    activeShape.options.set("stroke", null);
+                }
+
+                activeShape = e.shape;
+                activeShape.options.set("stroke", { width: 1.5, color: "#00f" });
+            }
+
+            function onReset() {
+                activeShape = null;
+            }
+        }
+
+            function createChart() {
+                $("#frequency-chart").kendoChart({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Action("GetNotificationsTimeHistory", "Home")",
+                                dataType: "json"
+                            }
+                        }
+                    },
+                    series: [{
+                        type: "column",
+                        field: "value",
+                    }],
+                    categoryAxis: {
+                        type: "category",
+                        field: "dateString"
+                    },
+                    valueAxis: {
+                        line: {
+                            visible: false
+                        },
+                        majorUnit: 1
+                    }
+                });
+            }
+
+        $(document).ready(createMap);
+        $(document).ready(createChart);
+    </script>
+}
