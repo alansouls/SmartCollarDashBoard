@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SmartCollar.Data.Migrations
 {
-    public partial class Entiies : Migration
+    public partial class Entities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,13 +26,13 @@ namespace SmartCollar.Data.Migrations
                 name: "Notification",
                 columns: table => new
                 {
-                    NotificationId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NotificationId = table.Column<Guid>(nullable: false),
                     Time = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false),
                     LocationPrecision = table.Column<decimal>(nullable: false),
-                    DeviceId = table.Column<string>(nullable: true)
+                    DeviceId = table.Column<string>(nullable: true),
+                    UserObservation = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

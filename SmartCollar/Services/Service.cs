@@ -1,4 +1,6 @@
-﻿using SmartCollar.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartCollar.Data;
+using SmartCollar.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,107 +10,50 @@ namespace SmartCollar.Services
 {
     public class Service : IService
     {
+        private readonly ApplicationDbContext _context;
+        public ApplicationDbContext GetContext() => _context;
+
+        public Service(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<Notification> GetNotifications()
         {
-            var collar1 = new Collar
+            return _context.Notifications.Include(s => s.Collar).Include(s => s.UserObservations).ThenInclude(s => s.User).Take(50);
+        }
+
+        public void UpdateNotification(Notification notification)
+        {
+            var dbNotification = _context.Notifications.Find(notification.NotificationId);
+            if (dbNotification == null)
             {
-                DeviceId = "collar-1",
-                LastTimeSeen = new DateTime(2021, 2, 05),
-                Latitude = 20,
-                LocationPrecision = 10,
-                Longitude = 5
-            };
-            return new Notification[]
+                dbNotification = notification;
+                dbNotification.CreatedAt = DateTime.Now;
+                dbNotification.UpdatedAt = DateTime.Now;
+                _context.Notifications.Add(dbNotification);
+            }
+            else
             {
-                new Notification
-                {
-                    NotificationId = 0,
-                    UserObservation = "Cachorro muito bravo, cuidado!",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744253M,
-                    LocationPrecision = 12,
-                    Longitude = -38.574700M,
-                    Time = new DateTime(2021, 1, 31)
-                },
-                new Notification
-                {
-                    NotificationId = 1,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.741185M,
-                    LocationPrecision = 15,
-                    Longitude = 38.574827M,
-                    Time = new DateTime(2021, 2, 1)
-                },
-                new Notification
-                {
-                    NotificationId = 2,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744311M,
-                    LocationPrecision = 15,
-                    Longitude = -38.576603M,
-                    Time = new DateTime(2021, 2, 1)
-                },
-                new Notification
-                {
-                    NotificationId = 3,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744311M,
-                    LocationPrecision = 15,
-                    Longitude = -38.576603M,
-                    Time = new DateTime(2021, 2, 1)
-                },
-                new Notification
-                {
-                    NotificationId = 4,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744411M,
-                    LocationPrecision = 15,
-                    Longitude = -38.571603M,
-                    Time = new DateTime(2021, 2, 2)
-                },
-                new Notification
-                {
-                    NotificationId = 5,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744111M,
-                    LocationPrecision = 15,
-                    Longitude = -38.578603M,
-                    Time = new DateTime(2021, 2, 2)
-                },
-                new Notification
-                {
-                    NotificationId = 6,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744511M,
-                    LocationPrecision = 15,
-                    Longitude = -38.575603M,
-                    Time = new DateTime(2021, 2, 4)
-                },
-                new Notification
-                {
-                    NotificationId = 7,
-                    UserObservation = "Cachorro manso, latiu só de chato.",
-                    Collar = collar1,
-                    DeviceId = "collar-1",
-                    Latitude = -3.744550M,
-                    LocationPrecision = 15,
-                    Longitude = -38.575013M,
-                    Time = new DateTime(2021, 2, 4)
-                }
-            };
+                dbNotification.UpdatedAt = DateTime.Now;
+                _context.UserNotifications.AddRange(notification.UserObservations);
+            }
+            _context.SaveChanges();
+        }
+
+        public string Login(string user, string hash)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Register(string user, string hash, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Logout(string user, string token)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,8 +10,8 @@ using SmartCollar.Data;
 namespace SmartCollar.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210124231841_Entiies")]
-    partial class Entiies
+    [Migration("20210225001702_MobileUserAndUserNotification")]
+    partial class MobileUserAndUserNotification
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -243,12 +243,25 @@ namespace SmartCollar.Data.Migrations
                     b.ToTable("Collar");
                 });
 
+            modelBuilder.Entity("SmartCollar.Entities.MobileUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MobileUser");
+                });
+
             modelBuilder.Entity("SmartCollar.Entities.Notification", b =>
                 {
-                    b.Property<int>("NotificationId")
+                    b.Property<Guid>("NotificationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
@@ -265,11 +278,41 @@ namespace SmartCollar.Data.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("NotificationId");
 
                     b.HasIndex("DeviceId");
 
                     b.ToTable("Notification");
+                });
+
+            modelBuilder.Entity("SmartCollar.Entities.UserNotification", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("WasAnAttack")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "NotificationId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.ToTable("UserNotification");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -328,6 +371,21 @@ namespace SmartCollar.Data.Migrations
                     b.HasOne("SmartCollar.Entities.Collar", "Collar")
                         .WithMany("Notifications")
                         .HasForeignKey("DeviceId");
+                });
+
+            modelBuilder.Entity("SmartCollar.Entities.UserNotification", b =>
+                {
+                    b.HasOne("SmartCollar.Entities.Notification", "Notification")
+                        .WithMany("UserObservations")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartCollar.Entities.MobileUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

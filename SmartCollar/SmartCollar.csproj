@@ -5,6 +5,19 @@
     <UserSecretsId>aspnet-SmartCollar-003BF243-042F-4245-9909-1769A162F668</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20210124231841_Entiies.cs" />
+    <Compile Remove="Data\Migrations\20210124231841_Entiies.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210224233632_NotificationToGuid.cs" />
+    <Compile Remove="Data\Migrations\20210224233632_NotificationToGuid.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210224233817_NotificationToGuid.cs" />
+    <Compile Remove="Data\Migrations\20210224233817_NotificationToGuid.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210225013517_Seed.cs" />
+    <Compile Remove="Data\Migrations\20210225013517_Seed.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210225014138_Seed.cs" />
+    <Compile Remove="Data\Migrations\20210225014138_Seed.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="FluentDateTime" Version="2.0.0" />
@@ -14,6 +27,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
 </Project>

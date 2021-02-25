@@ -48,7 +48,7 @@ namespace SmartCollar.Controllers
                 Precision = n.LocationPrecision,
                 n.TimeString,
                 n.Collar.LastTimeSeenString,
-                n.UserObservation
+                n.LastObservation
             }).ToList();
 
             return Json(dto);

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SmartCollar.Entities
 {
-    public class Notification
+    public class Notification : TrackableRegister
     {
         [Key]
-        public int NotificationId { get; set; }
+        public Guid NotificationId { get; set; }
 
         public DateTime Time { get; set; }
 
@@ -26,6 +26,8 @@ namespace SmartCollar.Entities
 
         public Collar Collar { get; set; }
 
-        public string UserObservation { get; set; }
+        public virtual IEnumerable<UserNotification> UserObservations { get; set; }
+
+        public string LastObservation { get => UserObservations?.OrderBy(s => s.CreatedAt)?.Last()?.Text ?? ""; }
     }
 }
