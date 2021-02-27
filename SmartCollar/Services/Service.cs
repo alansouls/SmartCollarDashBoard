@@ -36,7 +36,11 @@ namespace SmartCollar.Services
             else
             {
                 dbNotification.UpdatedAt = DateTime.Now;
-                _context.UserNotifications.AddRange(notification.UserObservations);
+                if (notification.UserObservations.Any())
+                {
+                    notification.UserObservations.First().CreatedAt = DateTime.Now;
+                    _context.UserNotifications.AddRange(notification.UserObservations);
+                }
             }
             _context.SaveChanges();
         }

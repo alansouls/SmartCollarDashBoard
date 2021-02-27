@@ -25,7 +25,7 @@ namespace SmartCollar.Data
 
         private static void ConfigureRelations(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Collar>().ToTable("Collar").HasMany(c => c.Notifications).WithOne(n => n.Collar).HasForeignKey(c => c.DeviceId);
+            modelBuilder.Entity<Collar>().ToTable("Collar").HasMany(c => c.Notifications).WithOne(n => n.Collar).HasForeignKey(c => c.DeviceId).IsRequired();
             modelBuilder.Entity<Notification>().ToTable("Notification").HasMany(e => e.UserObservations).WithOne(e => e.Notification).HasForeignKey(e => e.NotificationId);
             modelBuilder.Entity<MobileUser>().ToTable("MobileUser").HasMany(a => a.Notifications).WithOne(a => a.User).HasForeignKey(a => a.UserId);
             modelBuilder.Entity<UserNotification>().ToTable("UserNotification").HasKey(e => new { e.UserId, e.NotificationId });

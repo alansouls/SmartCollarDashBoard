@@ -43,9 +43,10 @@ namespace SmartCollar.Data
             {
                 decimal latitude = (decimal)(latitudeMin + (latitudeMax - latitudeMin) * (decimal)_random.NextDouble());
                 decimal longitude = (decimal)(longitudeMin + (longitudeMax - longitudeMin) * (decimal)_random.NextDouble());
+                var id = i == 0 ? "6008ccff9da25300273d88bd" : i.ToString();
                 list.Add(new Collar
                 {
-                    DeviceId = i.ToString(),
+                    DeviceId = id,
                     LastTimeSeen = DateTime.Now.AddHours(-_random.Next(50)),
                     Latitude = latitude,
                     Longitude = longitude,

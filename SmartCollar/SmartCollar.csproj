@@ -16,6 +16,8 @@
     <Compile Remove="Data\Migrations\20210225013517_Seed.Designer.cs" />
     <Compile Remove="Data\Migrations\20210225014138_Seed.cs" />
     <Compile Remove="Data\Migrations\20210225014138_Seed.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210226000215_MakeCollarRequired.cs" />
+    <Compile Remove="Data\Migrations\20210226000215_MakeCollarRequired.Designer.cs" />
   </ItemGroup>
 
 

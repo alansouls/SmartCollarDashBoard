@@ -28,6 +28,6 @@ namespace SmartCollar.Entities
 
         public virtual IEnumerable<UserNotification> UserObservations { get; set; }
 
-        public string LastObservation { get => UserObservations?.OrderBy(s => s.CreatedAt)?.Last()?.Text ?? ""; }
+        public string LastObservation { get => UserObservations?.OrderBy(s => s.CreatedAt)?.LastOrDefault()?.Text ?? ""; }
     }
 }
