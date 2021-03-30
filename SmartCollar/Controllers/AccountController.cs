@@ -45,7 +45,7 @@ namespace SmartCollar.Controllers
                 return BadRequest(new { errorMessage = "Username já existente." });
         }
 
-        public IActionResult Register(string user, string token)
+        public IActionResult Logout(string user, string token)
         {
             var result = _service.Logout(user, token);
             if (result)
