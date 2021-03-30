@@ -21,11 +21,13 @@ namespace SmartCollar.Controllers
             _service = service;
         }
 
-        public IActionResult Login(string user, string password)
+
+        [HttpPost("[action]")]
+        public IActionResult Login([FromBody] AccountDTO account)
         {
             var md5 = MD5.Create();
-            var hash = Encoding.UTF8.GetString(md5.ComputeHash(Encoding.UTF8.GetBytes(password)));
-            var result = _service.Login(user, hash);
+            var hash = Encoding.UTF8.GetString(md5.ComputeHash(Encoding.UTF8.GetBytes(account.password)));
+            var result = _service.Login(account.user, hash);
 
             if (result != null)
                 return Ok(new { token = result });
@@ -33,25 +35,37 @@ namespace SmartCollar.Controllers
                 return Unauthorized("Senha ou usuário errados.");
         }
 
-        public IActionResult Register(string user, string password, string name)
+
+        [HttpPost("[action]")]
+        public IActionResult Register([FromBody]AccountDTO account)
         {
             var md5 = MD5.Create();
-            var hash = Encoding.UTF8.GetString(md5.ComputeHash(Encoding.UTF8.GetBytes(password)));
-            var result = _service.Register(user, hash, name);
+            var hash = Encoding.UTF8.GetString(md5.ComputeHash(Encoding.UTF8.GetBytes(account.password)));
+            var result = _service.Register(account.user, hash, account.name);
 
             if (result)
-                return Ok(new { token = _service.Login(user, password) });
+                return Ok(new { token = _service.Login(account.user, hash) });
             else
                 return BadRequest(new { errorMessage = "Username já existente." });
         }
 
-        public IActionResult Logout(string user, string token)
+
+        [HttpPost("[action]")]
+        public IActionResult Logout([FromBody] AccountDTO account)
         {
-            var result = _service.Logout(user, token);
+            var result = _service.Logout(account.user, account.token);
             if (result)
                 return Ok();
             else
                 return Unauthorized("Senha ou usuário errados.");
+        }
+
+        public class AccountDTO
+		{
+            public string user { get; set; }
+            public string token { get; set; }
+            public string name { get; set; }
+            public string password { get; set; }
         }
     }
 }
