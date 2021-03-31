@@ -16,6 +16,10 @@ namespace SmartCollar.Entities
 
         public string TimeString { get => Time.ToString("dd/MM/yyyy hh:mm"); }
 
+        public string LastUpdateString { get => LastUpdate?.ToString("dd/MM/yyyy hh:mm"); }
+
+        public DateTime? LastUpdate { get => UserObservations.OrderBy(b => b.CreatedAt).LastOrDefault()?.CreatedAt; }
+
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }

@@ -47,7 +47,7 @@ namespace SmartCollar.Controllers
                 n.Longitude,
                 Precision = n.LocationPrecision,
                 n.TimeString,
-                n.Collar.LastTimeSeenString,
+                LastTimeSeenString = n.LastUpdateString,
                 n.LastObservation
             }).ToList();
 
