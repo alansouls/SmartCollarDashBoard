@@ -19,7 +19,12 @@ namespace SmartCollar.Services
 		}
 
 		public IEnumerable<Notification> GetNotifications() {
-			return _context.Notifications.Include(s => s.Collar).Include(s => s.UserObservations).ThenInclude(s => s.User).Take(50);
+			return _context.Notifications.Include(s => s.Collar).Include(s => s.UserObservations).ThenInclude(s => s.User).OrderByDescending(s => s.Time).Take(50);
+		}
+
+		public IEnumerable<Notification> GetUserNotifications(Guid userId)
+		{
+			return _context.Notifications.Include(s => s.Collar).Include(s => s.UserObservations).ThenInclude(s => s.User).Where(u => u.UserObservations.Select(s => s.User.Id).Contains(userId)).OrderByDescending(s => s.Time).Take(50);
 		}
 
 		public void UpdateNotification(Notification notification) {
@@ -78,6 +83,12 @@ namespace SmartCollar.Services
 				_context.SaveChanges();
 				return true;
 			}
+		}
+
+		public MobileUser GetUser(string token)
+		{
+			var user = _context.MobileUsers.FirstOrDefault(u => u.Token == token);
+			return user;
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace SmartCollar.Dto
 
         public string Observation { get; set; }
 
-        public Guid User_Id { get; set; }
+        public string token { get; set; }
     }
     public class NotificationDTO
     {

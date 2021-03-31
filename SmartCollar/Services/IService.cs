@@ -19,5 +19,7 @@ namespace SmartCollar.Services
 
         bool Register(string user, string hash, string name);
         bool Logout(string user, string token);
-    }
+		MobileUser GetUser(string token);
+		IEnumerable<Notification> GetUserNotifications(Guid userId);
+	}
 }
